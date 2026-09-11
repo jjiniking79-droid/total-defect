@@ -25,11 +25,7 @@ jobs:
 
       - name: exe 빌드 (PyInstaller)
         run: |
-          pyinstaller --noconfirm --onefile --windowed `
-            --name TFT_LCD_Inspector `
-            --collect-all sklearn `
-            --collect-all cv2 `
-            main.py
+           pyinstaller --noconfirm --onefile --windowed ` --name TFT_LCD_Inspector ` --collect-all sklearn ` --collect-all scipy ` --collect-all cv2 ` --copy-metadata scikit-learn ` --copy-metadata scipy ` main.py
 
       - name: 빌드 결과물(exe) 업로드
         uses: actions/upload-artifact@v4
