@@ -1,0 +1,38 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: 저장소 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name: 파이썬 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 필요 패키지 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: exe 빌드 (PyInstaller)
+        run: |
+          pyinstaller --noconfirm --onefile --windowed `
+            --name TFT_LCD_Inspector `
+            --collect-all sklearn `
+            --collect-all cv2 `
+            main.py
+
+      - name: 빌드 결과물(exe) 업로드
+        uses: actions/upload-artifact@v4
+        with:
+          name: TFT_LCD_Inspector_exe
+          path: dist/TFT_LCD_Inspector.exe
